@@ -5,4 +5,8 @@
     background-image: url(https://image.flaticon.com/icons/png/128/179/179429.png);
     background-size: 20px;
     background-repeat: no-repeat;
+    
+}
+.error:after{
+    content: attr("error-msg");
 }

@@ -1,9 +1,9 @@
 /*
     TODO:
-        none
+        - Error Msg after Input field        
     FIXME:
 
-*/ 
+*/
 (function ($) {
     var settings;
     var form;
@@ -13,7 +13,7 @@
         // Default options
         settings = $.extend({
             requiredClass: 'required',
-            error:{
+            error: {
                 errorClass: 'error',
                 errorMsgEnabled: true,
                 errorMsg: {
@@ -32,36 +32,45 @@
         var validForm = true;
         $(form).find("." + settings.requiredClass).each(function () {
             var res = validateInput($(this));
-            if(validForm == true){
+            if (validForm == true) {
                 validForm = res;
             }
         });
 
         //Submit form falls enabled
-        if(validForm && settings.submitOnSuccess){
+        if (validForm && settings.submitOnSuccess) {
             $(form).submit()
         }
 
         return validForm;
     }
 
-    function validateInput(obj){
+    function validateInput(obj) {
         var valid = true;
 
         //Validierung nach Datentyp und default
         switch ($(obj).attr("data-type")) {
             case "number":
                 valid = /^\d+$/.test($(obj).val());
-                if(!(/^\d+$/.test($(obj).val()))){
-                    if(settings.error.errorMsgEnabled){$(obj).attr('error-msg', settings.error.errorMsg.wrongInputType.toString())};
+                $(obj).next("small").remove();
+
+                if (!(/^\d+$/.test($(obj).val()))) {
+                    if (settings.error.errorMsgEnabled) {
+                         $(obj).attr('error-msg', settings.error.errorMsg.wrongInputType.toString());
+                         $(obj).after("<small class='form-text text-muted'>"+ settings.error.errorMsg.wrongInputType + "</small>") };
                 }
                 break;
 
             case "mail":
                 const regexMail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 valid = regexMail.test($(obj).val())
-                if(!(regexMail.test($(obj).val()))){
-                    if(settings.error.errorMsgEnabled){$(obj).attr('error-msg', settings.error.errorMsg.notMail.toString())};
+                $(obj).next("small").remove();
+                
+                if (!(regexMail.test($(obj).val()))) {
+                    if (settings.error.errorMsgEnabled) {
+                        $(obj).attr('error-msg', settings.error.errorMsg.notMail.toString());
+                        $(obj).after("<small class='form-text text-muted'>"+ settings.error.errorMsg.notMail + "</small>")
+                    };
                 }
 
                 break;
@@ -75,9 +84,13 @@
 
         //Validierung nach Länge(min)
         var attrMin = $(obj).attr('min');
-        if (typeof attrMin !== typeof undefined && attrMin !== false) {
-            if(attrMin > $(obj).val().length){
-                if(settings.error.errorMsgEnabled){$(obj).attr('error-msg', settings.error.errorMsg.tooShort.toString());};
+        if (typeof attrMin !== typeof undefined && attrMin !== false && valid) {
+            if (attrMin > $(obj).val().length) {
+                if (settings.error.errorMsgEnabled) {
+                    $(obj).attr('error-msg', settings.error.errorMsg.tooShort.toString());
+                    $(obj).next("small").remove();
+                    $(obj).after("<small class='form-text text-muted'>" + settings.error.errorMsg.tooShort + "</small>")
+                };
                 valid = false;
             }
         }
@@ -85,8 +98,12 @@
         //Validierung nach Länge(max)
         var attrMax = $(obj).attr('max');
         if (typeof attrMax !== typeof undefined && attrMax !== false) {
-            if(attrMax < $(obj).val().length){
-                if(settings.error.errorMsgEnabled){$(obj).attr('error-msg',settings.error.errorMsg.tooLong.toString());};
+            if (attrMax < $(obj).val().length) {
+                if (settings.error.errorMsgEnabled) {
+                    $(obj).attr('error-msg', settings.error.errorMsg.tooLong.toString());
+                    $(obj).next("small").remove();
+                    $(obj).after("<small class='form-text text-muted'>" + settings.error.errorMsg.tooLong + "</small>")
+                };
                 valid = false;
             }
         }

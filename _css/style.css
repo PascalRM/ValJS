@@ -1,12 +1,18 @@
 .error{
-    transition: .3s all ease;
+    transition: .3s all cubic-bezier(0, 0.66, 0.43, 0.92);
     border: 1px red solid;
-    background-position: right center;
+    background-position: 99% center;
     background-image: url(https://image.flaticon.com/icons/png/128/179/179429.png);
     background-size: 20px;
     background-repeat: no-repeat;
-    
+    background-position-x: 10;
 }
+
 .error:after{
     content: attr("error-msg");
+}
+
+.form-group input{
+    transition: .3s all cubic-bezier(0, 0.66, 0.43, 0.92);
+    padding-right: 25px;
 }

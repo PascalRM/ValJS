@@ -1,0 +1,8 @@
+.error{
+    transition: .3s all ease;
+    border: 1px red solid;
+    background-position: right center;
+    background-image: url(https://image.flaticon.com/icons/png/128/179/179429.png);
+    background-size: 20px;
+    background-repeat: no-repeat;
+}
